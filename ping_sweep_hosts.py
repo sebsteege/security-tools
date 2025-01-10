@@ -11,8 +11,17 @@ def ping_sweep(host_file):
 
     with open(host_file) as file:
         for ip in file:
-            address = ipaddress.ip_address(ip.strip()) # strip newline \n from address
+            ip = ip.strip()
+            address = ipaddress.ip_address(ip)
             for value in ip.split():
-                    print(value)
+                try:
+                    response_time = ping(ip, timeout=1)
+                    if response_time is not None:
+                        message = f"{ip} reachable"
+                    else:
+                        message = f"{ip} unreachable"
+                except Exception:
+                    message = f"Error pinging {ip}"
+                print(message)
 
 ping_sweep(host_file)
