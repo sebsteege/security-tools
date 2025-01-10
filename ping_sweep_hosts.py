@@ -11,8 +11,7 @@ def ping_sweep(host_file):
 
     with open(host_file) as file:
         for ip in file:
-            address = ipaddress.ip_address(ip.strip())
-            ip_str = str(ip)
+            address = ipaddress.ip_address(ip.strip()) # strip newline \n from address
             for value in ip.split():
                     print(value)
 
