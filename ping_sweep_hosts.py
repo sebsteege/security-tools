@@ -10,18 +10,35 @@ output_file = input()
 def ping_sweep(host_file):
 
     with open(host_file) as file:
-        for ip in file:
-            ip = ip.strip()
-            address = ipaddress.ip_address(ip)
-            for value in ip.split():
-                try:
-                    response_time = ping(ip, timeout=1)
-                    if response_time is not None:
-                        message = f"{ip} reachable"
-                    else:
-                        message = f"{ip} unreachable"
-                except Exception:
-                    message = f"Error pinging {ip}"
-                print(message)
-
+        try:
+            for ip in file:
+                ip = ip.strip()
+                address = ipaddress.ip_address(ip)
+                for value in ip.split():
+                    try:
+                        response_time = ping(ip, timeout=1)
+                        if response_time is not None:
+                            message = f"{ip} reachable"
+                        else:
+                            message = f"{ip} unreachable"
+                    except Exception:
+                        message = f"Error pinging {ip}"
+                    print(message)
+        except ValueError:
+            for network_cidr in file:
+                network = ipaddress.ip_network(network_cidr, strict=False)
+                network = network.strip()
+                ip = [str(ip) for ip in network.hosts()]
+                print(ip)
+                #for value in network.split():
+                #    try:
+                #        response_time = ping(network, timeout=1)
+                #        if response_time is not None:
+                #            message = f"{network} reachable"
+                #        else:
+                #            message = f"{network} unreachable"
+                #    except Exception:
+                #        message = f"Error pinging {network}"
+                #    print(network)
+                break
 ping_sweep(host_file)
