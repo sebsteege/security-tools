@@ -1,11 +1,14 @@
-import datetime
+from datetime import datetime
 import ipaddress
 from ping3 import ping
 
+print()
 print('Enter the text file of hosts you would like to ping:')
 host_file = input()
+print()
 print('Enter the name of the output file:')
 output_file = input()
+print()
 
 def ping_sweep(host_file):
 
@@ -33,5 +36,9 @@ def ping_sweep(host_file):
                 except ValueError:
                     message = f"Error pinging {host}"
                 print(message)
-                
+
+now = datetime.now()
+formatted_now = now.strftime("%Y-%m-%d %H:%M:%S")
+print(formatted_now)
+print()
 ping_sweep(host_file)
