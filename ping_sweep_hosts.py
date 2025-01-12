@@ -12,16 +12,17 @@ print()
 
 def ping_sweep(host_file):
 
-    with open(host_file) as file:
+    with open(host_file) as file, open(output_file, "w") as outfile:
         for line in file:
             ip_or_cidr = line.strip()
             try:
                 address = ipaddress.ip_address(ip_or_cidr)
                 response_time = ping(str(address), timeout=1)
                 if response_time is not None:
-                    message = f"{address} reachable"
+                    message = f"{address} reachable\n"
                 else:
-                    message = f"{address} unreachable"
+                    message = f"{address} unreachable\n"
+                outfile.write(message)
                 print(message)
             except ValueError:
                 try:
@@ -29,13 +30,15 @@ def ping_sweep(host_file):
                     for host in network.hosts():
                         response_time = ping(str(host), timeout=1)
                         if response_time is not None:
-                            message = f"{host} reachable"
+                            message = f"{host} reachable\n"
                         else:
-                            message = f"{host} unreachable"
+                            message = f"{host} unreachable\n"
+                        outfile.write(message)
                         print(message)
                 except ValueError:
-                    message = f"Error pinging {host}"
-                print(message)
+                    message = f"Error pinging {host}\n"
+                    outfile.write(message)
+                    print(message)
 
 now = datetime.now()
 formatted_now = now.strftime("%Y-%m-%d %H:%M:%S")
