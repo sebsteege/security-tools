@@ -23,7 +23,6 @@ def ping_sweep(host_file):
             except ValueError:
                 try:
                     network = ipaddress.ip_network(ip_or_cidr, strict=False)
-                    #ip = [str(ip) for ip in network.hosts()]
                     for host in network.hosts():
                         response_time = ping(str(host), timeout=1)
                         if response_time is not None:
