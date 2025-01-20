@@ -21,12 +21,14 @@ print()
 def ping_host_windows(host):
 
     try:
-        result = subprocess.run(['ping', '-c', '4', '-n', host], stdout=subprocess.DEVNULL, encoding='utf-8')
-        if "Destination host unreachable" in result.decode:
+        result = subprocess.run(['ping', '-n', '4', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
+        if "Destination host unreachable" in result.stdout:
             return f"{host} unreachable\n"
-        if "Request timed out" in result.decode:
+        if "Request timed out" in result.stdout:
             return f"{host} unreachable\n"
-        if "Reply from" in result.decode and host not in result.decode:
+        if "transmit failed" in result.stdout:
+            return f"{host} unreachable\n"
+        if "TTL expired in transit" in result.stdout:
             return f"{host} unreachable\n"
         else:
             return f"{host} reachable\n"
@@ -63,7 +65,7 @@ def ping_sweep(host_file, output_file, max_threads=10):
     with ThreadPoolExecutor(max_threads) as executor, open(output_file, "w") as outfile:
         if platform.system().lower()=='linux':
             results = executor.map(ping_host_linux, tasks)
-        if platform.system().lower()=='windows':
+        elif platform.system().lower()=='windows':
             results = executor.map(ping_host_windows, tasks)
         for result in results:
             outfile.write(result)
