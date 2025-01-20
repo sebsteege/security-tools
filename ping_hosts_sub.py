@@ -28,7 +28,7 @@ def ping_host_windows(host):
             return f"{host} unreachable\n"
         if "transmit failed" in result.stdout:
             return f"{host} unreachable\n"
-        if "Reply from" in result.stdout and host not in result.stdout:
+        if "TTL expired in transit" in result.stdout:
             return f"{host} unreachable\n"
         else:
             return f"{host} reachable\n"
