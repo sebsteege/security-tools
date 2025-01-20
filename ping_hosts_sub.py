@@ -5,7 +5,7 @@ import subprocess
 from concurrent.futures import ThreadPoolExecutor
 
 """
-This script is used to ping hosts from a Windows system.
+This script is used to ping host.
 Enter the full path to your hosts file if it exists in
 another directory.
 """
