@@ -24,11 +24,11 @@ def ping_host_windows(host):
         result = subprocess.run(['ping', '-n', '4', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, encoding='utf-8')
         if "Destination host unreachable" in result.stdout:
             return f"{host} unreachable\n"
-        if "Request timed out" in result.stdout:
+        elif "Request timed out" in result.stdout:
             return f"{host} unreachable\n"
-        if "transmit failed" in result.stdout:
+        elif "transmit failed" in result.stdout:
             return f"{host} unreachable\n"
-        if "TTL expired in transit" in result.stdout:
+        elif "TTL expired in transit" in result.stdout:
             return f"{host} unreachable\n"
         else:
             return f"{host} reachable\n"
